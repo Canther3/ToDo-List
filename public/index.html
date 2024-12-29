@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Auth Container -->
+        <div id="auth-container">
+            <!-- Login Form -->
+            <div class="auth-form" id="login-form">
+                <h2>Giriş Yap</h2>
+                <br>    
+                <div class="form-group">
+                    <input type="text" id="login-username" placeholder="Kullanıcı Adı">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="Şifre">
+                </div>
+                <button onclick="login()" class="auth-btn">Giriş Yap</button>
+                <br>
+                <p class="switch-text">    <br>
+                    Hesabın yok mu? 
+                    <a style="color: #6366f1;" href="#" onclick="toggleForm('registerForm', 'loginForm')">Kayıt Ol</a>
+                </p>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-form" id="register-form" style="display: none;">
+                <h2>Kayıt Ol</h2>
+                <br>
+                <div class="form-group">
+                    <input type="text" id="register-username" placeholder="Kullanıcı Adı">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="register-password" placeholder="Şifre">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="register-password-confirm" placeholder="Şifre Tekrar">
+                </div>
+                <button onclick="register()" class="auth-btn">Kayıt Ol</button>
+            
+                <p class="switch-text">
+                     <br>
+                    Zaten hesabın var mı? 
+                    <a   style="color: #6366f1;"  href="#" onclick="toggleForm('loginForm', 'registerForm')">Giriş Yap</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Todo Container -->
+        <div id="todo-container" style="display: none;">
+            <div class="header">
+                <h1>Yapılacaklar Listesi</h1>
+            </div>
+            
+            <div class="input-section">
+                <input type="text" id="taskInput" placeholder="Yeni görev ekle...">
+                <input type="date" id="dueDateInput">
+                <input type="time" id="dueTimeInput">
+                <select id="priorityInput">
+                    <option value="low">Düşük</option>
+                    <option value="medium" selected>Orta</option>
+                    <option value="high">Yüksek</option>
+                </select>
+                <button onclick="addTask()">Ekle</button>
+                <button class="logout-btn" onclick="logout()">Çıkış</button>
+            </div>
+
+            <div id="taskList"></div>
+        </div>
+
+        <!-- Popup HTML'i -->
+        <div class="edit-popup" id="editPopup">
+            <div class="popup-content">
+                <h3>Görevi Düzenle</h3>
+                <div class="popup-form">
+                    <div class="form-group">
+                        <label>Görev</label>
+                        <input type="text" id="editTaskText">
+                    </div>
+                    <div class="form-group">
+                        <label>Tarih</label>
+                        <input type="date" id="editDueDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Saat</label>
+                        <input type="time" id="editDueTime">
+                    </div>
+                    <div class="form-group">
+                        <label>Önemlilik</label>
+                        <select id="editPriority">
+                            <option value="low">Düşük</option>
+                            <option value="medium">Orta</option>
+                            <option value="high">Yüksek</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="popup-buttons">
+                    <button onclick="saveEdit()">Kaydet</button>
+                    <button onclick="closePopup()">İptal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

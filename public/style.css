@@ -1,0 +1,1032 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: #1a1a1a;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Task List - Connected Post-it Style */
+#taskList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 40px;
+    padding: 40px;
+    position: relative;
+}
+
+.task-item {
+    position: relative;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+/* Bağlantı çizgisini kaldır */
+.task-item::before,
+.task-item::after {
+    display: none; /* Bağlantı çizgilerini gizle */
+}
+
+/* Hover efekti */
+.task-item:hover {
+    transform: translateY(-2px);
+}
+
+/* Priority renkleri */
+.task-item.priority-high {
+    background: linear-gradient(to right, #fee2e2 0%, #fef2f2 100%);
+    border-left: 4px solid #ef4444;
+}
+
+.task-item.priority-high:hover {
+    background: linear-gradient(to right, #fecaca 0%, #fee2e2 100%);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.15);
+}
+
+/* Orta öncelik */
+.task-item.priority-medium {
+    background: linear-gradient(to right, #fef3c7 0%, #fffbeb 100%);
+    border-left: 4px solid #f59e0b;
+}
+
+.task-item.priority-medium:hover {
+    background: linear-gradient(to right, #fde68a 0%, #fef3c7 100%);
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.15);
+}
+
+/* Düşük öncelik */
+.task-item.priority-low {
+    background: linear-gradient(to right, #dcfce7 0%, #f0fdf4 100%);
+    border-left: 4px solid #10b981;
+}
+
+.task-item.priority-low:hover {
+    background: linear-gradient(to right, #bbf7d0 0%, #dcfce7 100%);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.15);
+}
+
+.task-item span {
+    font-size: 16px;
+    color: #333;
+    word-wrap: break-word;
+}
+
+/* Tarih stili */
+.task-date {
+    font-size: 12px;
+    color: #666;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+/* Pin efekti */
+.task-item::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    background: #ff4444;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 2;
+}
+
+.delete-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    background: rgba(255, 68, 68, 0.8);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.task-item:hover .delete-btn {
+    opacity: 1;
+}
+
+/* Input section container */
+.input-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    padding: 20px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 2px solid #e5e7eb;
+    padding-right: 70px; /* Çıkış butonu için alan */
+}
+
+/* Çıkış butonu pozisyonlama */
+.logout-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 8px 15px;
+    font-size: 14px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important; /* Kırmızı gradient */
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2) !important;
+    border-radius: 15px !important;
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    box-shadow: 0 6px 15px rgba(239, 68, 68, 0.3) !important;
+}
+
+.logout-btn:active {
+    transform: translateY(-50%) scale(0.98) !important;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2) !important;
+}
+
+/* Priority styles */
+.priority-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.priority-badge.high {
+    background: #ff4444;
+}
+
+.priority-badge.medium {
+    background: #ffa726;
+}
+
+.priority-badge.low {
+    background: #66bb6a;
+}
+
+/* Date styles */
+.date-info {
+    font-size: 12px;
+    color: #666;
+    margin-top: 10px;
+}
+
+.due-date {
+    margin-bottom: 5px;
+}
+
+.due-date.overdue {
+    color: #ff4444;
+    font-weight: bold;
+}
+
+.created-date {
+    opacity: 0.7;
+}
+
+/* Task content layout */
+.task-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Auth Forms */
+.auth-form {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    max-width: 400px;
+    margin: 50px auto;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #taskList {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .task-item::after {
+        width: 50px;
+        right: -35px;
+    }
+
+    .input-section {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+        padding-bottom: 60px; /* Çıkış butonu için alt boşluk */
+    }
+
+    .input-section input,
+    .input-section select,
+    .input-section button {
+        width: 100%;
+        margin: 0;
+    }
+
+    .logout-btn {
+        position: absolute;
+        bottom: 15px;
+        top: auto;
+        right: 15px;
+        transform: none !important;
+    }
+
+    #taskInput {
+        width: 100% !important;
+    }
+
+    .task-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .logout-btn {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+        width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    #taskList {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .task-item::after {
+        display: none;
+    }
+
+    .task-item {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .input-section {
+        padding: 12px;
+        padding-bottom: 60px;
+    }
+
+    .input-section input,
+    .input-section select {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.task-item {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Header ve başlık stili */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+}
+
+.header h1 {
+    color: white;
+    font-size: 28px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Pin stili */
+.pin {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 15px;
+    height: 15px;
+    background: #ff4444;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 2;
+    transition: all 0.3s ease;
+    border: 2px solid #fff;
+}
+
+.pin:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
+}
+
+.pin.selected {
+    background: #4CAF50;
+    animation: pulse 1s infinite;
+    border: 2px solid #fff;
+}
+
+/* Bağlantı çizgisi stili */
+.connection-line {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.connection-line line {
+    stroke: #ff4444;
+    stroke-width: 2;
+    stroke-dasharray: 10, 5; /* Kesikli çizgi efekti */
+    stroke-linecap: round;
+    animation: moveDash 30s linear infinite;
+    filter: drop-shadow(0 0 3px rgba(255, 68, 68, 0.5));
+}
+
+/* Bağlantı noktaları için yeni stil */
+.connection-point {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #ff4444;
+    border-radius: 50%;
+    z-index: 3;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+}
+
+/* Animasyonlar */
+@keyframes moveDash {
+    to {
+        stroke-dashoffset: -1000;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+    70% {
+        transform: scale(1.2);
+        box-shadow: 0 0 0 15px rgba(76, 175, 80, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+}
+
+/* Bağlı post-it stil güncelleme */
+.task-item.connected {
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+    border: 2px solid rgba(255, 68, 68, 0.3);
+}
+
+.task-item.connected::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 3px;
+    background: linear-gradient(45deg, #ff4444, transparent, #ff4444);
+    opacity: 0.2;
+    z-index: -1;
+}
+
+/* Datetime inputs container */
+.datetime-inputs {
+    display: flex;
+    gap: 5px;
+}
+
+.datetime-inputs input[type="date"],
+.datetime-inputs input[type="time"] {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Date info styling */
+.date-info {
+    font-size: 12px;
+    color: #666;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.due-date {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.due-date i {
+    color: #1a73e8;
+}
+
+.due-date.overdue {
+    color: #ff4444;
+    font-weight: bold;
+}
+
+.due-date.overdue i {
+    color: #ff4444;
+}
+
+/* Responsive updates */
+@media (max-width: 768px) {
+    .datetime-inputs {
+        width: 100%;
+    }
+    
+    .datetime-inputs input[type="date"],
+    .datetime-inputs input[type="time"] {
+        flex: 1;
+    }
+}
+
+/* Form container */
+.auth-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    max-width: 400px;
+    width: 90%;
+    margin: 50px auto;
+    position: relative;
+}
+
+/* Form başlığı */
+.auth-container h2 {
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+/* Input container */
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+/* Input stilleri */
+.form-group input {
+    width: 100%;
+    padding: 18px 22px;
+    font-size: 16px;
+    border: 2px solid #eef1f6;
+    border-radius: 15px;
+    background: #f8fafc;
+    transition: all 0.3s ease;
+    color: #1a1a1a;
+}
+
+.form-group input:focus {
+    border-color: #6366f1;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    outline: none;
+}
+
+/* Floating label */
+.form-group label {
+    position: absolute;
+    left: 20px;
+    top: -10px;
+    background: #ffffff;
+    padding: 0 8px;
+    font-size: 14px;
+    color: #64748b;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.form-group input:focus + label {
+    color: #6366f1;
+}
+
+/* Button styles */
+.auth-container button {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #6366f1;
+    color: white;
+    margin-top: 15px;
+}
+
+
+.auth-container button:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.2);
+}
+
+.auth-container button:active {
+    transform: translateY(0);
+}
+
+/* Link styles */
+.auth-container a {
+    display: block;
+    text-align: center;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 25px;
+    transition: all 0.3s ease;
+}
+
+.auth-container a:hover {
+    color: #6366f1;
+}
+
+/* Error message */
+.error-message {
+    background: #fee2e2;
+    color: #ef4444;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    text-align: center;
+    display: none;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 30px 20px;
+        margin: 20px auto;
+        border-radius: 20px;
+    }
+
+    .auth-container h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+    }
+
+    .form-group input {
+        padding: 15px 18px;
+    }
+}
+
+/* Modern buton tasarımı (çıkış ve sil butonları hariç) */
+button:not(.delete-btn):not(.logout-btn) {
+    padding: 14px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+}
+
+/* Hover efekti */
+button:not(.delete-btn):not(.logout-btn):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(79, 70, 229, 0.25);
+    background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+}
+
+/* Active efekti */
+button:not(.delete-btn):not(.logout-btn):active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2);
+}
+
+/* Login/Register butonları için özel stil */
+.auth-container button {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    font-size: 16px;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+}
+
+.auth-container button:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Görev ekleme butonu */
+.input-section button {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    padding: 16px 28px;
+    margin-left: 10px;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+}
+
+.input-section button:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    box-shadow: 0 6px 15px rgba(99, 102, 241, 0.25);
+}
+
+/* Öncelik seçimi ve tarih inputları */
+select, input[type="date"], input[type="time"] {
+    padding: 12px 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #4b5563;
+    background: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+select:hover, input[type="date"]:hover, input[type="time"]:hover {
+    border-color: #6366f1;
+}
+
+select:focus, input[type="date"]:focus, input[type="time"]:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Ripple efekti */
+button:not(.delete-btn):not(.logout-btn)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease-out, height 0.6s ease-out;
+}
+
+button:not(.delete-btn):not(.logout-btn):active::after {
+    width: 200%;
+    height: 200%;
+}
+
+/* Task input alanı */
+#taskInput {
+    padding: 14px 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+#taskInput:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+    button:not(.delete-btn):not(.logout-btn) {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .input-section {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .input-section button {
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    select, input[type="date"], input[type="time"] {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Task içeriği */
+.task-item .task-content {
+    color: #1f2937;
+}
+
+/* Tarih ve öncelik badge'leri */
+.task-item .task-date,
+.task-item .priority-badge {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+/* Tamamlanmış görevler */
+.task-item.completed {
+    opacity: 0.7;
+}
+
+.task-item.completed .task-content {
+    text-decoration: line-through;
+}
+
+/* Edit butonu */
+.edit-btn {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+/* Popup arka planı */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+/* Popup içeriği */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+    z-index: 1001;
+}
+
+/* Popup başlığı */
+.popup h3 {
+    margin: 0 0 20px 0;
+    color: #1f2937;
+    font-size: 1.5rem;
+}
+
+/* Popup form grupları */
+.popup .form-group {
+    margin-bottom: 20px;
+}
+
+.popup .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #4b5563;
+}
+
+.popup .form-group input,
+.popup .form-group select,
+.popup .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* Popup butonları */
+.popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.popup-buttons button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.popup-buttons .save-btn {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    border: none;
+}
+
+.popup-buttons .cancel-btn {
+    background: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #e5e7eb;
+}
+
+/* Task item içindeki butonlar */
+.task-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+/* Edit butonu */
+.edit-btn {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    transform: translateY(-1px);
+}
+
+.edit-btn i {
+    font-size: 12px;
+}
+
+/* Task info alanı */
+.task-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Priority badge */
+.priority-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.priority-high .priority-badge {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.priority-medium .priority-badge {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.priority-low .priority-badge {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+/* Popup Styles */
+.edit-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.popup-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content h3 {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.popup-form .form-group {
+    margin-bottom: 20px;
+}
+
+.popup-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #666;
+}
+
+.popup-form input,
+.popup-form select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.popup-buttons button {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.popup-buttons button:first-child {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white;
+    border: none;
+}
+
+.popup-buttons button:last-child {
+    background: #f3f4f6;
+    color: #666;
+    border: 1px solid #e5e7eb;
+} 
