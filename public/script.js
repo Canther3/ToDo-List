@@ -114,6 +114,7 @@ async function login() {
         token = data.token;
         localStorage.setItem('token', token);
         localStorage.setItem('username', data.username);
+        localStorage.setItem('password', data.password);
         
         elements.authContainer.style.display = 'none';
         elements.todoContainer.style.display = 'block';
